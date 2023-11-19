@@ -10,21 +10,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePassword } from '../../store/userDataSlice';
 
 function ForgotPassword() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle the submission of the forgot password form, e.g., send a reset email.
-    setEmailDirty(true);
-    setNewPasswordDirty(true);
-    setConfirmPasswordDirty(true);
-  };
 
   const defaultTheme = createTheme();
 
   const navigate = useNavigate();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const minPasswordLength = 8;
+
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.userData);
 
   const [email, setEmail] = React.useState("");
   const [emailDirty, setEmailDirty] = React.useState(false);
@@ -44,6 +42,30 @@ function ForgotPassword() {
   const [passwordMatch, setPasswordMatch] = React.useState(false);
 
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Handle the submission of the forgot password form, e.g., send a reset email.
+    setEmailDirty(true);
+    setNewPasswordDirty(true);
+    setConfirmPasswordDirty(true);
+    if(emailValid && newPassword.length >= minPasswordLength && newPasswordHasDigit && newPasswordHasLowerCase && newPasswordHasUpperCase
+      && confirmPassword.length >= minPasswordLength && confirmPasswordHasDigit && confirmPasswordHasLowerCase && confirmPasswordHasUpperCase){
+        let unique = true;
+        users.map((user) => {
+          if(user.email === email){
+            unique = false;
+          }
+        })
+        if(!unique){
+          dispatch(updatePassword({email: email, password: confirmPassword}));
+          alert("Password updated! Please proceed to login.");
+          navigate('/');
+        } else {
+          alert("The email address is not in use. Please use a different email address or proceed to login.");
+        }
+      }
+    
+  };
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
