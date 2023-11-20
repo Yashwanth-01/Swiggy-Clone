@@ -71,7 +71,6 @@ function ForgotPassword() {
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setEmailDirty(true);
-    validateEmail();
   }
   const handleNewPassword = (e) => {
     setNewPassword(e.target.value);
@@ -87,9 +86,10 @@ function ForgotPassword() {
 
   }
 
-  const validateEmail = () => {
+  const validateEmail = React.useEffect(() => {
+    // console.log('yyyy',email)
     setEmailValid(emailRegex.test(email));
-  }
+  }, [email])
 
   const validateNewPassword = (value) => {
     setNewPasswordHasDigit(false);
