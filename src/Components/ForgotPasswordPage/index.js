@@ -49,7 +49,8 @@ function ForgotPassword() {
     setNewPasswordDirty(true);
     setConfirmPasswordDirty(true);
     if(emailValid && newPassword.length >= minPasswordLength && newPasswordHasDigit && newPasswordHasLowerCase && newPasswordHasUpperCase
-      && confirmPassword.length >= minPasswordLength && confirmPasswordHasDigit && confirmPasswordHasLowerCase && confirmPasswordHasUpperCase){
+      && confirmPassword.length >= minPasswordLength && confirmPasswordHasDigit && confirmPasswordHasLowerCase && confirmPasswordHasUpperCase 
+      && passwordMatch) {
         let unique = true;
         users.map((user) => {
           if(user.email === email){

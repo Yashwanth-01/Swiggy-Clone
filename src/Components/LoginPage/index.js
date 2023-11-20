@@ -91,9 +91,7 @@ export default function SignIn() {
   };
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    setEmailDirty(true);
-    validateEmail();
-    
+    setEmailDirty(true); 
   }
   const handlePassword = (e) => {
     setPassword(e.target.value);
@@ -101,9 +99,10 @@ export default function SignIn() {
     validatePassword(e.target.value);
   }
 
-  const validateEmail = () => {
+  const validateEmail = React.useEffect(() => {
+    // console.log('yyyy',email)
     setEmailValid(emailRegex.test(email));
-  }
+  }, [email])
 
   const validatePassword = (value) => {
     setHasDigit(false);
